@@ -5,7 +5,6 @@ const findTodayAttendance = async (userId, date) => {
     "SELECT * FROM attendance WHERE user_id = $1 AND date = $2",
     [userId, date]
   );
-
   return result.rows[0];
 };
 
@@ -16,7 +15,6 @@ const createCheckIn = async (userId, date, checkInTime) => {
      RETURNING *`,
     [userId, date, checkInTime]
   );
-
   return result.rows[0];
 };
 
@@ -29,7 +27,6 @@ const updateCheckOut = async (attendanceId, checkOutTime, totalHours) => {
      RETURNING *`,
     [checkOutTime, totalHours, attendanceId]
   );
-
   return result.rows[0];
 };
 
@@ -38,18 +35,30 @@ const getUserAttendance = async (userId) => {
     "SELECT * FROM attendance WHERE user_id=$1 ORDER BY date DESC",
     [userId]
   );
-
   return result.rows;
 };
 
+// Admin: all employees' attendance
 const getAllAttendance = async () => {
   const result = await pool.query(
-    `SELECT a.*, u.name
+    `SELECT a.*, u.name, u.role
      FROM attendance a
      JOIN users u ON a.user_id = u.id
      ORDER BY date DESC`
   );
+  return result.rows;
+};
 
+// Manager: attendance of employees under this manager
+const getAttendanceByManager = async (managerId) => {
+  const result = await pool.query(
+    `SELECT a.*, u.name AS employee_name
+     FROM attendance a
+     JOIN users u ON a.user_id = u.id
+     WHERE u.manager_id = $1
+     ORDER BY a.date DESC`,
+    [managerId]
+  );
   return result.rows;
 };
 
@@ -58,5 +67,6 @@ module.exports = {
   createCheckIn,
   updateCheckOut,
   getUserAttendance,
-  getAllAttendance
+  getAllAttendance,
+  getAttendanceByManager,
 };

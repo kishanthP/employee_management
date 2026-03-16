@@ -5,7 +5,8 @@ const express = require("express");
 const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
-const { verifyToken } = require("./middleware/authMiddleware");
+const adminRoutes = require("./routes/adminRoutes");
+const managerRoutes = require("./routes/managerRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 
@@ -14,44 +15,29 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ── Public routes ─────────────────────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
 
-app.use("/api/attendance", attendanceRoutes);
+// ── Role-protected routes ─────────────────────────────────────────────────────
+app.use("/api/admin", adminRoutes);         // admin only
+app.use("/api/manager", managerRoutes);     // manager only
+app.use("/api/attendance", attendanceRoutes); // employee (checkin/out/my) + admin (all)
+app.use("/api/tasks", taskRoutes);          // employee (my/update) + admin (all)
 
-app.use("/api/tasks", taskRoutes);
-
+// ── Utility routes ────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.send("Server Running");
+  res.send("Employee Management Server Running");
 });
 
 app.get("/test-db", async (req, res) => {
   try {
-
     const result = await pool.query("SELECT NOW()");
-
-    res.json({
-      message: "Database connected",
-      time: result.rows[0]
-    });
-
+    res.json({ message: "Database connected", time: result.rows[0] });
   } catch (error) {
-
-    res.status(500).json({
-      error: error.message
-    });
-
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.get("/protected", verifyToken, (req, res) => {
-
-  res.json({
-    message: "Protected route working",
-    user: req.user
-  });
-
-});
-
 app.listen(process.env.PORT, () => {
-  console.log("Server running on port", process.env.PORT);
+  console.log(`Server running on port ${process.env.PORT}`);
 });

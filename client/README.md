@@ -1,16 +1,70 @@
-# React + Vite
+# Employee Management System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive dashboard built with React and Material UI for managing organizational workflows with a three-layer hierarchy.
 
-Currently, two official plugins are available:
+## 🚀 Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This is the client-side application for the Employee Management System (EMS). It features a premium design with role-based navigation and access control for **Admins**, **Managers**, and **Employees**.
 
-## React Compiler
+### Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+-   **🔐 Secure Authentication**: Persistent login with JWT and Redux Toolkit.
+-   **🎭 Role-Based Access Control (RBAC)**: Personalized interfaces and protected routes for each user type.
+-   **📊 Dynamic Dashboards**: Real-time stats and quick actions tailored to individual roles.
+-   **⏰ Attendance Management**: Seamless Check-In/Out system with history tracking.
+-   **📝 Task Orchestration**: 
+    -   Managers can assign tasks and track live progress.
+    -   Employees can view and update their task statuses.
+-   **📱 Responsive Design**: Fully optimized for Desktop, Tablet, and Mobile views using MUI Grid and Box systems.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   **Core**: React 18 (Vite)
+-   **Styling**: Material UI (MUI) v5
+-   **State Management**: Redux Toolkit (with persistence)
+-   **Routing**: React Router DOM v6
+-   **HTTP Client**: Axios (with Bearer Token interceptors)
+-   **Icons**: MUI Icons Material
+
+## 📁 Project Structure
+
+```text
+client/
+├── src/
+│   ├── app/            # Redux store configuration
+│   ├── components/     # Reusable UI (Layout, Navbar, Sidebar, ProtectedRoute)
+│   ├── features/       # Redux slices (Auth, etc.)
+│   ├── pages/          # Page components
+│   │   ├── admin/      # Admin-only management pages
+│   │   ├── manager/    # Manager-only team tools
+│   │   └── ...         # Shared pages (Login, Dashboard, Tasks, Attendance)
+│   ├── services/       # API configuration (Axios instance)
+│   ├── App.jsx         # Root routing and theme provider
+│   └── main.jsx        # Entry point
+```
+
+## ⚙️ Setup & Installation
+
+1.  **Change Directory**:
+    ```bash
+    cd client
+    ```
+
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Configure API**:
+    Ensure the backend is running (usually at `http://localhost:5000`). Update `src/services/api.js` if your backend URL is different.
+
+4.  **Launch**:
+    ```bash
+    npm run dev
+    ```
+
+## 📖 Usage Guide
+
+-   **Login**: Use credentials provided by your system administrator.
+-   **Navigation**: Use the sidebar to access features specific to your role.
+-   **Mobile**: Tap the hamburger menu (if using a responsive variant) to navigate on smaller screens.
