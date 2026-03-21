@@ -50,6 +50,42 @@ exports.deleteManager = async (req, res) => {
   }
 };
 
+// ─── PUT /api/admin/managers/:id ────────────────────────────────────────────
+exports.updateManager = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+
+    const user = await userModel.findById(id);
+    if (!user || user.role !== "manager") {
+      return res.status(404).json({ message: "Manager not found" });
+    }
+
+    if (email && email !== user.email) {
+      const existing = await userModel.findUserByEmail(email);
+      if (existing) {
+        return res.status(400).json({ message: "Email already registered" });
+      }
+    }
+
+    let hashedPassword = null;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const updatedManager = await userModel.updateUser(id, name, email, hashedPassword);
+
+    await activityModel.logActivity(
+      req.user.id,
+      `Admin updated manager: ${updatedManager.name} (${updatedManager.email})`
+    );
+
+    res.json({ message: "Manager updated successfully", manager: updatedManager });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // ─── GET /api/admin/managers ─────────────────────────────────────────────────
 exports.getAllManagers = async (req, res) => {
   try {

@@ -13,6 +13,10 @@ const managerService = {
     const response = await api.delete(`/manager/employees/${id}`);
     return response.data;
   },
+  updateEmployee: async (id, data) => {
+    const response = await api.put(`/manager/employees/${id}`, data);
+    return response.data;
+  },
   assignTask: async (data) => {
     const response = await api.post("/manager/tasks", data);
     return response.data;

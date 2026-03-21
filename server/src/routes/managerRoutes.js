@@ -18,6 +18,9 @@ router.get("/employees", managerController.getMyEmployees);
 // DELETE /api/manager/employees/:id  → delete own employee
 router.delete("/employees/:id", managerController.deleteEmployee);
 
+// PUT    /api/manager/employees/:id  → update own employee
+router.put("/employees/:id", managerController.updateEmployee);
+
 // ── Tasks ─────────────────────────────────────────────────────────────────────
 // POST   /api/manager/tasks          → assign task to own employee
 router.post("/tasks", managerController.assignTask);

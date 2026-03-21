@@ -25,10 +25,10 @@ function Login() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 8, display: "flex", flexDirection: "column", alignItems: "center", p: 4, borderRadius: 2, boxShadow: 3, bgcolor: "background.paper" }}>
+    <Container maxWidth="sm" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 4, borderRadius: 6, boxShadow: 3, bgcolor: "background.paper" }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Employee Management
+          Login
         </Typography>
         <Typography variant="body1" color="text.secondary" gutterBottom>
           Please login to continue

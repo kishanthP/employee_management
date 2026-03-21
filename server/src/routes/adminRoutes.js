@@ -18,6 +18,9 @@ router.get("/managers", adminController.getAllManagers);
 // DELETE /api/admin/managers/:id   → delete a manager
 router.delete("/managers/:id", adminController.deleteManager);
 
+// PUT    /api/admin/managers/:id   → update a manager
+router.put("/managers/:id", adminController.updateManager);
+
 // ── Employees ─────────────────────────────────────────────────────────────────
 // GET    /api/admin/employees      → list all employees
 router.get("/employees", adminController.getAllEmployees);

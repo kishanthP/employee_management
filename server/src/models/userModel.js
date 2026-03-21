@@ -18,6 +18,22 @@ const findById = async (id) => {
   return result.rows[0];
 };
 
+const updateUser = async (id, name, email, hashedPassword) => {
+  if (hashedPassword) {
+    const result = await pool.query(
+      "UPDATE users SET name=$1, email=$2, password=$3 WHERE id=$4 RETURNING id, name, email, role, manager_id, created_at",
+      [name, email, hashedPassword, id]
+    );
+    return result.rows[0];
+  } else {
+    const result = await pool.query(
+      "UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING id, name, email, role, manager_id, created_at",
+      [name, email, id]
+    );
+    return result.rows[0];
+  }
+};
+
 // ─── Admin: create / delete / list managers ──────────────────────────────────
 
 const createManager = async (name, email, hashedPassword) => {
@@ -96,6 +112,7 @@ const createUser = async (name, email, password) => {
 module.exports = {
   findUserByEmail,
   findById,
+  updateUser,
   createUser,
   createManager,
   createEmployee,

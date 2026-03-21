@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { Container, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, TextField, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Alert } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import EditIcon from "@mui/icons-material/Edit";
 import adminService from "../../services/adminService";
 
 function ManageManagers() {
   const [managers, setManagers] = useState([]);
   const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedManager, setSelectedManager] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -49,6 +52,33 @@ function ManageManagers() {
     }
   };
 
+  const handleOpenEdit = (manager) => {
+    setSelectedManager(manager);
+    setFormData({ name: manager.name, email: manager.email, password: "" });
+    setEditOpen(true);
+    setError("");
+    setSuccess("");
+  };
+
+  const handleUpdate = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      const updateData = { name: formData.name, email: formData.email };
+      if (formData.password) {
+        updateData.password = formData.password;
+      }
+      await adminService.updateManager(selectedManager.id, updateData);
+      setSuccess("Manager updated successfully!");
+      setEditOpen(false);
+      setSelectedManager(null);
+      setFormData({ name: "", email: "", password: "" });
+      fetchManagers();
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update manager");
+    }
+  };
+
   return (
     <Container>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
@@ -77,6 +107,9 @@ function ManageManagers() {
                 <TableCell>{m.email}</TableCell>
                 <TableCell>{new Date(m.created_at).toLocaleDateString()}</TableCell>
                 <TableCell align="right">
+                  <IconButton color="primary" onClick={() => handleOpenEdit(m)}>
+                    <EditIcon />
+                  </IconButton>
                   <IconButton color="error" onClick={() => handleDelete(m.id)}>
                     <DeleteIcon />
                   </IconButton>
@@ -122,6 +155,46 @@ function ManageManagers() {
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button onClick={handleCreate} variant="contained" disabled={!formData.name || !formData.email || !formData.password}>
             Create Manager
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={editOpen} onClose={() => setEditOpen(false)} fullWidth maxWidth="xs">
+        <DialogTitle>Edit Manager</DialogTitle>
+        <DialogContent>
+          {error && <Alert severity="error" sx={{ mb: 2, mt: 1 }}>{error}</Alert>}
+          <TextField
+            margin="dense"
+            label="Full Name"
+            fullWidth
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Email Address"
+            fullWidth
+            required
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="New Password (Optional)"
+            fullWidth
+            type="password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            helperText="Leave blank to keep existing password"
+          />
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setEditOpen(false)}>Cancel</Button>
+          <Button onClick={handleUpdate} variant="contained" disabled={!formData.name || !formData.email}>
+            Update Manager
           </Button>
         </DialogActions>
       </Dialog>

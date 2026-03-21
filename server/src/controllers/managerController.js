@@ -68,6 +68,48 @@ exports.deleteEmployee = async (req, res) => {
   }
 };
 
+// ─── PUT /api/manager/employees/:id ──────────────────────────────────────────
+exports.updateEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const managerId = req.user.id;
+    const { name, email, password } = req.body;
+
+    const user = await userModel.findById(id);
+
+    if (!user || user.role !== "employee") {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    if (String(user.manager_id) !== String(managerId)) {
+      return res.status(403).json({ message: "You can only update your own employees" });
+    }
+
+    if (email && email !== user.email) {
+      const existing = await userModel.findUserByEmail(email);
+      if (existing) {
+        return res.status(400).json({ message: "Email already registered" });
+      }
+    }
+
+    let hashedPassword = null;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const updatedEmployee = await userModel.updateUser(id, name, email, hashedPassword);
+
+    await activityModel.logActivity(
+      managerId,
+      `Manager updated employee: ${updatedEmployee.name} (${updatedEmployee.email})`
+    );
+
+    res.json({ message: "Employee updated successfully", employee: updatedEmployee });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // ─── GET /api/manager/employees ──────────────────────────────────────────────
 exports.getMyEmployees = async (req, res) => {
   try {

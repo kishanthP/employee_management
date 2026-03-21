@@ -13,6 +13,10 @@ const adminService = {
     const response = await api.delete(`/admin/managers/${id}`);
     return response.data;
   },
+  updateManager: async (id, data) => {
+    const response = await api.put(`/admin/managers/${id}`, data);
+    return response.data;
+  },
   getAllEmployees: async () => {
     const response = await api.get("/admin/employees");
     return response.data;

@@ -68,3 +68,11 @@ client/
 -   **Login**: Use credentials provided by your system administrator.
 -   **Navigation**: Use the sidebar to access features specific to your role.
 -   **Mobile**: Tap the hamburger menu (if using a responsive variant) to navigate on smaller screens.
+
+
+color
+Dark navy sidebar (#1E2235) — looks premium, easy to navigate
+Indigo blue primary (#5B6CF9) — trustworthy and professional, ideal for buttons, active states, and links
+Green for attendance (#22C55E) — instantly readable as "present / done"
+Amber for tasks (#F59E0B) — signals urgency without alarm
+Red for danger (#EF4444) — absent, overdue, alerts
