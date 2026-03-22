@@ -56,7 +56,10 @@ client/
     ```
 
 3.  **Configure API**:
-    Ensure the backend is running (usually at `http://localhost:5000`). Update `src/services/api.js` if your backend URL is different.
+    The API base URL is configured in the `.env` file. Ensure it matches your backend location (default: `http://localhost:5000/api`).
+    ```env
+    VITE_API_BASE_URL=http://localhost:5000/api
+    ```
 
 4.  **Launch**:
     ```bash
