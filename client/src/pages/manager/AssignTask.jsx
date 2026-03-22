@@ -51,7 +51,7 @@ function AssignTask() {
           {success && <Alert severity="success" sx={{ mb: 3 }}>{success}</Alert>}
 
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{xs: 12}}>
               <TextField
                 label="Task Title"
                 fullWidth
@@ -60,7 +60,7 @@ function AssignTask() {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{xs: 12}}>
               <TextField
                 label="Description"
                 fullWidth
@@ -70,7 +70,7 @@ function AssignTask() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <TextField
                 select
                 label="Assign To"
@@ -86,7 +86,7 @@ function AssignTask() {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <TextField
                 select
                 label="Priority"
@@ -99,7 +99,7 @@ function AssignTask() {
                 <MenuItem value="high">High</MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <TextField
                 label="Due Date"
                 type="date"

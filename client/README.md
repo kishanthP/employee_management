@@ -2,22 +2,22 @@
 
 A modern, responsive dashboard built with React and Material UI for managing organizational workflows with a three-layer hierarchy.
 
-## 🚀 Overview
+## Overview
 
 This is the client-side application for the Employee Management System (EMS). It features a premium design with role-based navigation and access control for **Admins**, **Managers**, and **Employees**.
 
 ### Key Features
 
--   **🔐 Secure Authentication**: Persistent login with JWT and Redux Toolkit.
--   **🎭 Role-Based Access Control (RBAC)**: Personalized interfaces and protected routes for each user type.
--   **📊 Dynamic Dashboards**: Real-time stats and quick actions tailored to individual roles.
--   **⏰ Attendance Management**: Seamless Check-In/Out system with history tracking.
--   **📝 Task Orchestration**: 
+-   **Secure Authentication**: Persistent login with JWT and Redux Toolkit.
+-   **Role-Based Access Control (RBAC)**: Personalized interfaces and protected routes for each user type.
+-   **Dynamic Dashboards**: Real-time stats and quick actions tailored to individual roles.
+-   **Attendance Management**: Seamless Check-In/Out system with history tracking.
+-   **Task Orchestration**: 
     -   Managers can assign tasks and track live progress.
     -   Employees can view and update their task statuses.
--   **📱 Responsive Design**: Fully optimized for Desktop, Tablet, and Mobile views using MUI Grid and Box systems.
+-   **Responsive Design**: Fully optimized for Desktop, Tablet, and Mobile views using MUI Grid and Box systems.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 -   **Core**: React 18 (Vite)
 -   **Styling**: Material UI (MUI) v5
@@ -26,7 +26,7 @@ This is the client-side application for the Employee Management System (EMS). It
 -   **HTTP Client**: Axios (with Bearer Token interceptors)
 -   **Icons**: MUI Icons Material
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 client/
@@ -43,7 +43,7 @@ client/
 │   └── main.jsx        # Entry point
 ```
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 1.  **Change Directory**:
     ```bash
@@ -63,7 +63,7 @@ client/
     npm run dev
     ```
 
-## 📖 Usage Guide
+## Usage Guide
 
 -   **Login**: Use credentials provided by your system administrator.
 -   **Navigation**: Use the sidebar to access features specific to your role.

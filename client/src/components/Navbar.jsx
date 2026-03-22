@@ -16,12 +16,14 @@ function Navbar() {
   return (
     <AppBar 
       position="fixed" 
-      elevation={1} 
+      elevation={0} 
       sx={{ 
-        bgcolor: "background.paper", 
+        bgcolor: "rgba(255, 255, 255, 0.8)", 
+        backdropFilter: "blur(8px)",
         color: "text.primary", 
-        borderBottom: "1px solid", 
-        borderColor: "divider",
+        borderBottom: "1px solid #F3F4F6", 
+        borderColor: "rgba(0, 0, 0, 0.05)",
+        borderRadius: 0,
         zIndex: (theme) => theme.zIndex.drawer + 1 
       }}
     >
@@ -34,7 +36,18 @@ function Navbar() {
             <Typography variant="body1" sx={{ fontWeight: 500 }}>
               {user.name} ({user.role})
             </Typography>
-            <Button color="inherit" onClick={handleLogout} sx={{ fontWeight: "bold" }}>
+            <Button 
+              variant="outlined" 
+              size="small"
+              color="primary" 
+              onClick={handleLogout} 
+              sx={{ 
+                fontWeight: "bold", 
+                borderRadius: 2,
+                px: 2,
+                textTransform: "none"
+              }}
+            >
               Logout
             </Button>
           </Box>

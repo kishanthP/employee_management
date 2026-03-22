@@ -8,6 +8,7 @@ import attendanceService from "../services/attendanceService";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PeopleIcon from "@mui/icons-material/People";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const { user } = useSelector((state) => state.auth);
@@ -83,13 +84,13 @@ function Dashboard() {
       <Grid container spacing={3}>
         {user.role === "admin" && (
           <>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{xs: 12, sm: 4}}>
               <StatCard title="Total Managers" value={stats?.managers || 0} icon={<PeopleIcon />} color="primary" />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{xs: 12, sm: 4}}>
               <StatCard title="Total Employees" value={stats?.employees || 0} icon={<PeopleIcon />} color="secondary" />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{xs: 12, sm: 4}}>
               <StatCard title="System Tasks" value={stats?.tasks || 0} icon={<AssignmentIcon />} color="success" />
             </Grid>
           </>
@@ -97,10 +98,10 @@ function Dashboard() {
 
         {user.role === "manager" && (
           <>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <StatCard title="My Team Size" value={stats?.employees || 0} icon={<PeopleIcon />} color="primary" />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <StatCard title="Team Tasks" value={stats?.tasks || 0} icon={<AssignmentIcon />} color="info" />
             </Grid>
           </>
@@ -108,10 +109,10 @@ function Dashboard() {
 
         {user.role === "employee" && (
           <>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <StatCard title="My Tasks" value={stats?.tasks || 0} icon={<AssignmentIcon />} color="primary" />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{xs: 12, sm: 6}}>
               <StatCard title="Attendance Days" value={stats?.attendance || 0} icon={<AccessTimeIcon />} color="warning" />
             </Grid>
           </>
@@ -125,24 +126,38 @@ function Dashboard() {
         </Typography>
         <Divider sx={{ mb: 3 }} />
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          {user.role === "admin" && (
-            <>
-              <Button variant="contained" href="/admin/managers">Add New Manager</Button>
-              <Button variant="outlined" href="/admin/reports">View System Activity</Button>
-            </>
-          )}
-          {user.role === "manager" && (
-            <>
-              <Button variant="contained" href="/manager/employees">Add Team Member</Button>
-              <Button variant="outlined" href="/manager/tasks/new">Assign New Task</Button>
-            </>
-          )}
           {user.role === "employee" && (
-            <>
-              <Button variant="contained" color="success" href="/dashboard">Check In / Out</Button>
-              <Button variant="outlined" href="/tasks">View My Tasks</Button>
-            </>
-          )}
+  <>
+    <Button variant="contained" color="success" component={Link} to="/attendance">
+      Check In / Out
+    </Button>
+    <Button variant="outlined" component={Link} to="/tasks">
+      View My Tasks
+    </Button>
+  </>
+)}
+
+{user.role === "admin" && (
+  <>
+    <Button variant="contained" component={Link} to="/admin/managers">
+      Add New Manager
+    </Button>
+    <Button variant="outlined" component={Link} to="/admin/reports">
+      View System Activity
+    </Button>
+  </>
+)}
+
+{user.role === "manager" && (
+  <>
+    <Button variant="contained" component={Link} to="/manager/employees">
+      Add Team Member
+    </Button>
+    <Button variant="outlined" component={Link} to="/manager/tasks/new">
+      Assign New Task
+    </Button>
+  </>
+)}
         </Box>
       </Paper>
     </Box>

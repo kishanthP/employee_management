@@ -46,11 +46,18 @@ function Sidebar() {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box", borderRight: "1px solid", borderColor: "divider" },
+        [`& .MuiDrawer-paper`]: { 
+          width: drawerWidth, 
+          boxSizing: "border-box", 
+          borderRight: "none", 
+          bgcolor: "#1E2235", // Dark navy sidebar
+          color: "white",
+          borderRadius: 0,
+        },
       }}
     >
-      <Box sx={{ mt: 8, overflow: "auto" }}>
-        <List>
+      <Box sx={{ mt: 10, overflow: "auto" }}>
+        <List sx={{ px: 2 }}>
           {roleItems.map((item) => (
             <ListItem
               button
@@ -58,18 +65,28 @@ function Sidebar() {
               onClick={() => navigate(item.path)}
               selected={location.pathname === item.path}
               sx={{
-                my: 0.5,
-                mx: 0,
+                my: 1,
                 borderRadius: 2,
+                cursor: "pointer",
+                color: "rgba(255, 255, 255, 0.7)",
+                transition: "all 0.2s",
+                "&:hover": {
+                  bgcolor: "rgba(255, 255, 255, 0.05)",
+                  color: "white",
+                  "& .MuiListItemIcon-root": { color: "white" },
+                },
                 "&.Mui-selected": {
-                  bgcolor: "primary.light",
-                  color: "primary.main",
-                  "& .MuiListItemIcon-root": { color: "primary.main" },
+                  bgcolor: "primary.main", // Indigo blue primary
+                  color: "white",
+                  "& .MuiListItemIcon-root": { color: "white" },
+                  "&:hover": {
+                    bgcolor: "primary.main",
+                  },
                 },
               }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 500 }} />
+              <ListItemIcon sx={{ color: "inherit", minWidth: 40 }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: location.pathname === item.path ? 600 : 500, fontSize: "0.95rem" }} />
             </ListItem>
           ))}
         </List>
