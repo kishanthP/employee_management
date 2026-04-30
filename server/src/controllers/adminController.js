@@ -106,6 +106,103 @@ exports.getAllEmployees = async (req, res) => {
   }
 };
 
+// ─── POST /api/admin/employees ───────────────────────────────────────────────
+exports.createEmployee = async (req, res) => {
+  try {
+    const { name, email, password, managerId } = req.body;
+
+    if (!managerId) {
+      return res.status(400).json({ message: "managerId is required" });
+    }
+
+    const manager = await userModel.findById(managerId);
+    if (!manager || manager.role !== "manager") {
+      return res.status(404).json({ message: "Manager not found" });
+    }
+
+    const existing = await userModel.findUserByEmail(email);
+    if (existing) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const employee = await userModel.createEmployee(
+      name,
+      email,
+      hashedPassword,
+      managerId
+    );
+
+    await activityModel.logActivity(
+      req.user.id,
+      `Admin created employee: ${name} (${email}) under manager: ${manager.name}`
+    );
+
+    res.status(201).json({ message: "Employee created successfully", employee });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// ─── DELETE /api/admin/employees/:id ─────────────────────────────────────────
+exports.deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userModel.findById(id);
+    if (!user || user.role !== "employee") {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    await userModel.deleteUserById(id);
+
+    await activityModel.logActivity(
+      req.user.id,
+      `Admin deleted employee: ${user.name} (id:${id})`
+    );
+
+    res.json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// ─── PUT /api/admin/employees/:id ────────────────────────────────────────────
+exports.updateEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+
+    const user = await userModel.findById(id);
+    if (!user || user.role !== "employee") {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    if (email && email !== user.email) {
+      const existing = await userModel.findUserByEmail(email);
+      if (existing) {
+        return res.status(400).json({ message: "Email already registered" });
+      }
+    }
+
+    let hashedPassword = null;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const updatedEmployee = await userModel.updateUser(id, name, email, hashedPassword);
+
+    await activityModel.logActivity(
+      req.user.id,
+      `Admin updated employee: ${updatedEmployee.name} (${updatedEmployee.email})`
+    );
+
+    res.json({ message: "Employee updated successfully", employee: updatedEmployee });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // ─── GET /api/admin/attendance ───────────────────────────────────────────────
 exports.getAttendanceReport = async (req, res) => {
   try {

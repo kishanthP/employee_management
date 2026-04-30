@@ -82,7 +82,7 @@ function ManageManagers() {
   return (
     <Container>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
-        <Typography variant="h4">Manage Managers</Typography>
+        <Typography variant="h4">All Managers</Typography>
         <Button variant="contained" startIcon={<PersonAddIcon />} onClick={() => setOpen(true)}>
           Add Manager
         </Button>

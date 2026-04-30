@@ -22,8 +22,17 @@ router.delete("/managers/:id", adminController.deleteManager);
 router.put("/managers/:id", adminController.updateManager);
 
 // ── Employees ─────────────────────────────────────────────────────────────────
+// POST   /api/admin/employees      → create an employee under a manager
+router.post("/employees", adminController.createEmployee);
+
 // GET    /api/admin/employees      → list all employees
 router.get("/employees", adminController.getAllEmployees);
+
+// DELETE /api/admin/employees/:id  → delete an employee
+router.delete("/employees/:id", adminController.deleteEmployee);
+
+// PUT    /api/admin/employees/:id  → update an employee
+router.put("/employees/:id", adminController.updateEmployee);
 
 // ── Reports ──────────────────────────────────────────────────────────────────
 // GET    /api/admin/attendance     → full attendance report

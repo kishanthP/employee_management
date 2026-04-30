@@ -47,7 +47,7 @@ function Login() {
       width: "100%",
       alignItems: "center",
     }}>
-      <Grid size={{ xs: 12, md: 5 }} sx={{ textAlign: "center" }}>
+      <Grid size={{ xs: 12, md: 5 }} sx={{   textAlign: "center" }}>
         <Player
   src={LoginAnimation}
   autoplay
@@ -65,7 +65,7 @@ function Login() {
 
         <Box component="form" onSubmit={handleLogin} sx={{ mt: 0.5, width: "100%" }}>
           <TextField
-            label="Email Address"
+            label="Enter your mail"
             fullWidth
             type="email"
             margin="normal"
@@ -73,7 +73,9 @@ function Login() {
             autoComplete="email"
             size="small"
             InputProps={{ sx: { py: 0.2, fontSize: "0.9rem"} }}
-            InputLabelProps={{ sx: { fontSize: "0.9rem"}}}
+            InputLabelProps={{ sx: { fontSize: "0.9rem", "& .MuiFormLabel-asterisk": {
+        display: "none",
+      },}}}
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -82,7 +84,7 @@ function Login() {
           />
 
           <TextField
-            label="Password"
+            label="Enter your password"
             type={showPassword ? "text" : "password"}
             fullWidth
             margin="normal"
@@ -103,7 +105,9 @@ function Login() {
       ),
       sx: { py: 0.2, fontSize: "0.9rem" },
     }}
-            InputLabelProps={{ sx: { fontSize: "0.9rem"}}}
+            InputLabelProps={{ sx: { fontSize: "0.9rem", "& .MuiFormLabel-asterisk": {
+        display: "none",
+      },}}}
             required
             autoComplete="current-password"
             value={password}

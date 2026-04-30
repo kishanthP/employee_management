@@ -7,6 +7,10 @@ import Attendance from "./pages/Attendance";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Chat & Groups
+import ChatPage from "./pages/ChatPage";
+import GroupsPage from "./pages/GroupsPage";
+
 // Admin Pages
 import ManageManagers from "./pages/admin/ManageManagers";
 import AllEmployees from "./pages/admin/AllEmployees";
@@ -32,6 +36,8 @@ function App() {
         {/* Global but restricted by logic inside */}
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/attendance" element={<Attendance />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/groups" element={<GroupsPage />} />
 
         {/* Admin Only */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>

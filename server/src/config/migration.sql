@@ -45,3 +45,53 @@ CREATE TABLE IF NOT EXISTS activity_logs (
   action     TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- ─── CHAT & GROUPS MIGRATION (run once) ──────────────────────────────────────
+
+-- 6. Direct message conversations (1-on-1)
+CREATE TABLE IF NOT EXISTS conversations (
+  id         SERIAL PRIMARY KEY,
+  user1_id   INT REFERENCES users(id) ON DELETE CASCADE,
+  user2_id   INT REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user1_id, user2_id)
+);
+
+-- 7. Group chats (created by managers only)
+CREATE TABLE IF NOT EXISTS groups (
+  id         SERIAL PRIMARY KEY,
+  name       VARCHAR(100) NOT NULL,
+  created_by INT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 8. Group members
+CREATE TABLE IF NOT EXISTS group_members (
+  group_id INT REFERENCES groups(id) ON DELETE CASCADE,
+  user_id  INT REFERENCES users(id) ON DELETE CASCADE,
+  PRIMARY KEY (group_id, user_id)
+);
+
+-- 9. All messages (direct + group)
+CREATE TABLE IF NOT EXISTS messages (
+  id              SERIAL PRIMARY KEY,
+  sender_id       INT REFERENCES users(id) ON DELETE SET NULL,
+  conversation_id INT REFERENCES conversations(id) ON DELETE CASCADE,
+  group_id        INT REFERENCES groups(id) ON DELETE CASCADE,
+  content         TEXT NOT NULL,
+  type            VARCHAR(20) DEFAULT 'text',
+  meeting_room    VARCHAR(200),
+  created_at      TIMESTAMP DEFAULT NOW(),
+  CHECK (
+    (conversation_id IS NOT NULL AND group_id IS NULL) OR
+    (group_id IS NOT NULL AND conversation_id IS NULL)
+  )
+);
+
+-- 10. Per-user message read receipts
+CREATE TABLE IF NOT EXISTS message_reads (
+  message_id INT REFERENCES messages(id) ON DELETE CASCADE,
+  user_id    INT REFERENCES users(id) ON DELETE CASCADE,
+  read_at    TIMESTAMP DEFAULT NOW(),
+  PRIMARY KEY (message_id, user_id)
+);

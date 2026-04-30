@@ -7,6 +7,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import HistoryIcon from "@mui/icons-material/History";
+import ChatIcon from "@mui/icons-material/Chat";
+import GroupIcon from "@mui/icons-material/Group";
 
 const drawerWidth = 240;
 
@@ -20,9 +22,11 @@ function Sidebar() {
   const menuItems = {
     admin: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-      { text: "Manage Managers", icon: <PeopleIcon />, path: "/admin/managers" },
-      { text: "All Employees", icon: <PeopleIcon />, path: "/admin/employees" },
+      { text: "Managers", icon: <PeopleIcon />, path: "/admin/managers" },
+      { text: "Employees", icon: <PeopleIcon />, path: "/admin/employees" },
       { text: "System Reports", icon: <AssessmentIcon />, path: "/admin/reports" },
+      { text: "Chat", icon: <ChatIcon />, path: "/chat" },
+      { text: "Groups", icon: <GroupIcon />, path: "/groups" },
     ],
     manager: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -30,11 +34,14 @@ function Sidebar() {
       { text: "Assign Tasks", icon: <AssignmentIcon />, path: "/manager/tasks/new" },
       { text: "View Tasks", icon: <AssignmentIcon />, path: "/manager/tasks" },
       { text: "Team Attendance", icon: <AccessTimeIcon />, path: "/manager/attendance" },
+      { text: "Chat", icon: <ChatIcon />, path: "/chat" },
+      { text: "Groups", icon: <GroupIcon />, path: "/groups" },
     ],
     employee: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
       { text: "My Tasks", icon: <AssignmentIcon />, path: "/tasks" },
       { text: "My Attendance", icon: <HistoryIcon />, path: "/attendance" },
+      { text: "Chat", icon: <ChatIcon />, path: "/chat" },
     ],
   };
 
@@ -46,10 +53,10 @@ function Sidebar() {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { 
-          width: drawerWidth, 
-          boxSizing: "border-box", 
-          borderRight: "none", 
+        [`& .MuiDrawer-paper`]: {
+          width: drawerWidth,
+          boxSizing: "border-box",
+          borderRight: "none",
           bgcolor: "#1E2235", // Dark navy sidebar
           color: "white",
           borderRadius: 0,

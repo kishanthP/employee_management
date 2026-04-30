@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../features/auth/authSlice";
+import NotificationBell from "./NotificationBell";
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
@@ -33,6 +34,7 @@ function Navbar() {
         </Typography>
         {user && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <NotificationBell />
             <Typography variant="body1" sx={{ fontWeight: 500 }}>
               {user.name} ({user.role})
             </Typography>

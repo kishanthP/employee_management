@@ -14,8 +14,8 @@ function MyAttendance() {
       const data = await attendanceService.getMyAttendance();
       setAttendance(data);
 
-      const today = new Date().toISOString().split("T")[0];
-      const todayRec = data.find(r => r.date.startsWith(today));
+      const today = new Date().toLocaleDateString();
+      const todayRec = data.find(r => new Date(r.date).toLocaleDateString() === today);
       setTodayRecord(todayRec);
     } catch (err) {
       console.error(err);
@@ -54,7 +54,7 @@ function MyAttendance() {
           <Typography color="text.secondary">Track your daily work hours and check-in history.</Typography>
         </Box>
 
-        <Paper elevation={3} sx={{ p: 2, minWidth: 280, textAlign: "center", borderLeft: "5px solid", borderLeftColor: todayRecord?.check_out ? "success.main" : todayRecord ? "warning.main" : "grey.400" }}>
+        <Paper elevation={3} sx={{ p: 2, minWidth: 280, textAlign: "center",borderLeftColor: todayRecord?.check_out ? "success.main" : todayRecord ? "warning.main" : "grey.400" }}>
           {todayRecord?.check_out ? (
             <Typography variant="h6" color="success.main">Today Completed</Typography>
           ) : todayRecord ? (
