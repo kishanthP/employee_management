@@ -26,7 +26,7 @@ function MeetingCard({ message, isOwn, showSenderName, onJoin }) {
           borderTopRightRadius: isOwn ? 4 : 16,
           borderTopLeftRadius: !isOwn ? 4 : 16,
           bgcolor: isOwn ? "primary.light" : "background.paper",
-          color: isOwn ? "white" : "text.primary",
+          color: "text.primary",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>

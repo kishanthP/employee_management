@@ -27,7 +27,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Login />} />
+      <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
+      <Route path="/login" element={token ? <Navigate to="/dashboard" /> : <Login />} />
 
       {/* Protected Layout Routes */}
       <Route element={<Layout><ProtectedRoute /></Layout>}>

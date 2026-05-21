@@ -6,6 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
+const swaggerUi = require("swagger-ui-express");
 
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -41,6 +42,14 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/groups", groupRoutes);
+
+// ── Swagger Documentation ─────────────────────────────────────────────────────
+try {
+  const swaggerDocument = require("./swagger_output.json");
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} catch (err) {
+  console.log("Swagger documentation not found. Run 'npm run swagger' to generate it.");
+}
 
 // ── Utility routes ────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {

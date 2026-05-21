@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --delay 1.5 src/app.js"
+    "start": "nodemon --delay 1.5 src/app.js",
+    "swagger": "node src/swagger.js",
+    "swagger-autogen": "node src/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,9 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

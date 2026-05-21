@@ -16,7 +16,6 @@ import * as chatService from "../services/chatService";
 import * as groupService from "../services/groupService";
 import MessageBubble from "../components/chat/MessageBubble";
 import MeetingCard from "../components/chat/MeetingCard";
-import JitsiMeeting from "../components/chat/JitsiMeeting";
 
 function ChatPage() {
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ function ChatPage() {
   const [usersList, setUsersList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
-  const [meetingRoom, setMeetingRoom] = useState(null);
 
   const messagesEndRef = useRef(null);
 
@@ -147,31 +145,46 @@ function ChatPage() {
 
   // Helper to get conversation list item data
   const getDMList = () => {
-    // If searching, show the user search results instead of recent conversations
-    if (searchQuery) {
-      return usersList.map((u) => ({
-        id: u.id,
-        name: u.name,
-        subtitle: u.role,
-        onClick: () => handleSelectUser(u),
-        unread: 0,
-        isOnline: onlineUsers.includes(u.id)
-      }));
-    }
+    const list = usersList.map((u) => {
+      const conversation = conversations.find(
+        (c) => (c.user1_id === user?.id && c.user2_id === u.id) || (c.user2_id === user?.id && c.user1_id === u.id)
+      );
 
-    return conversations.map((c) => {
-      const otherUserId = c.user1_id === user.id ? c.user2_id : c.user1_id;
-      const otherUserName = c.user1_id === user.id ? c.user2_name : c.user1_name;
-      const unread = unreadCounts.conversations?.find((x) => x.id === c.id)?.unread || 0;
+      let unread = 0;
+      let subtitle = u.role || "User";
+      let itemId = u.id;
+      let lastMessageAt = 0;
+
+      if (conversation) {
+        unread = unreadCounts.conversations?.find((x) => x.id === conversation.id)?.unread || 0;
+        itemId = conversation.id;
+        if (conversation.last_message) {
+          subtitle = conversation.last_message;
+        }
+        if (conversation.last_message_at) {
+          lastMessageAt = new Date(conversation.last_message_at).getTime();
+        }
+      }
 
       return {
-        id: c.id,
-        name: otherUserName,
-        subtitle: c.last_message || "No messages yet",
-        onClick: () => handleSelectUser({ id: otherUserId, name: otherUserName }),
+        id: itemId,
+        name: u.name,
+        subtitle: subtitle,
+        onClick: () => handleSelectUser(u),
         unread: parseInt(unread),
-        isOnline: onlineUsers.includes(otherUserId)
+        isOnline: onlineUsers.includes(u.id),
+        lastMessageAt,
+        hasConversation: !!conversation
       };
+    });
+
+    return list.sort((a, b) => {
+      if (a.hasConversation && !b.hasConversation) return -1;
+      if (!a.hasConversation && b.hasConversation) return 1;
+      if (a.hasConversation && b.hasConversation) {
+        return b.lastMessageAt - a.lastMessageAt;
+      }
+      return a.name.localeCompare(b.name);
     });
   };
 
@@ -284,7 +297,7 @@ function ChatPage() {
                       message={msg}
                       isOwn={isOwn}
                       showSenderName={showSenderName}
-                      onJoin={(room) => setMeetingRoom(room)}
+                      onJoin={(room) => window.open(`https://meet.ffmuc.net/${room}`, "_blank")}
                     />
                   );
                 }
@@ -325,12 +338,6 @@ function ChatPage() {
           </Box>
         )}
       </Paper>
-
-      <JitsiMeeting
-        open={!!meetingRoom}
-        roomName={meetingRoom}
-        onClose={() => setMeetingRoom(null)}
-      />
     </Box>
   );
 }
